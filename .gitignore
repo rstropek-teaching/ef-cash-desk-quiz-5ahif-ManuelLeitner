@@ -3,3 +3,8 @@
 ################################################################################
 
 /CashDesk.Tests/obj/Release/netcoreapp2.0
+/CashDesk.Tests/obj
+/CashDesk.Tests/bin/Debug/netcoreapp2.0
+/CashDesk/obj
+/.vs
+/CashDesk/bin/Debug/netcoreapp2.0

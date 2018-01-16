@@ -2,14 +2,12 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace CashDesk
-{
+namespace CashDesk {
     #region Model
     /// <summary>
     /// Represents a club member
     /// </summary>
-    public interface IMember
-    {
+    public interface IMember {
         /// <summary>
         /// Uniquely identifies a club member.
         /// </summary>
@@ -59,8 +57,7 @@ namespace CashDesk
     /// The membership record with a set <see cref="End"/> must be the last membership
     /// record for this member.
     /// </remarks>
-    public interface IMembership
-    {
+    public interface IMembership {
         /// <summary>
         /// References the member for this membership
         /// </summary>
@@ -83,7 +80,7 @@ namespace CashDesk
         /// <remarks>
         /// This is an optional field. If this field is set, its value has to be greater than <see cref="Begin"/>.
         /// </remarks>
-        DateTime End { get; }
+        DateTime? End { get; }
     }
 
     /// <summary>
@@ -93,8 +90,7 @@ namespace CashDesk
     /// Club members have to pay membership fees. This entity stores each deposit of club members.
     /// New deposity can only be made on active memberships.
     /// </remarks>
-    public interface IDeposit
-    {
+    public interface IDeposit {
         /// <summary>
         /// References the membership that this deposit is for
         /// </summary>
@@ -112,8 +108,7 @@ namespace CashDesk
         decimal Amount { get; }
     }
 
-    public interface IDepositStatistics
-    {
+    public interface IDepositStatistics {
         IMember Member { get; }
 
         int Year { get; }
@@ -123,8 +118,7 @@ namespace CashDesk
     #endregion
 
     #region Exceptions
-    public class AlreadyMemberException : Exception
-    {
+    public class AlreadyMemberException : Exception {
         public AlreadyMemberException(string message) : base(message) { }
 
         public AlreadyMemberException(string message, Exception innerException) : base(message, innerException) { }
@@ -132,8 +126,7 @@ namespace CashDesk
         public AlreadyMemberException() { }
     }
 
-    public class NoMemberException : Exception
-    {
+    public class NoMemberException : Exception {
         public NoMemberException(string message) : base(message) { }
 
         public NoMemberException(string message, Exception innerException) : base(message, innerException) { }
@@ -141,8 +134,7 @@ namespace CashDesk
         public NoMemberException() { }
     }
 
-    public class DuplicateNameException : Exception
-    {
+    public class DuplicateNameException : Exception {
         public DuplicateNameException(string message) : base(message) { }
 
         public DuplicateNameException(string message, Exception innerException) : base(message, innerException) { }
@@ -154,8 +146,7 @@ namespace CashDesk
     /// <summary>
     /// Implements the data access layer
     /// </summary>
-    public interface IDataAccess : IDisposable
-    {
+    public interface IDataAccess : IDisposable {
         /// <summary>
         /// Initializes the data access layer
         /// </summary>
@@ -163,9 +154,9 @@ namespace CashDesk
         /// A user has to call this method before calling any other method of the class.
         /// </remarks>
         /// <exception cref="InvalidOperationException">
-        /// <see cref="InitializeDatabaseAsync"/> has already been called
+        /// <see cref="InitializeDatabase"/> has already been called
         /// </exception>
-        Task InitializeDatabaseAsync();
+        void InitializeDatabase();
 
         /// <summary>
         /// Adds a new member
@@ -175,7 +166,7 @@ namespace CashDesk
         /// Number of the new member
         /// </returns>
         /// <exception cref="InvalidOperationException">
-        /// <see cref="InitializeDatabaseAsync"/> has not been called before
+        /// <see cref="InitializeDatabase"/> has not been called before
         /// </exception>
         /// <exception cref="ArgumentException">
         /// At least one of the parameters contains an invalid value. The exception's <see cref="Exception.Message"/>
@@ -191,7 +182,7 @@ namespace CashDesk
         /// </summary>
         /// <param name="memberNumber">Number of the member to delete</param>
         /// <exception cref="InvalidOperationException">
-        /// <see cref="InitializeDatabaseAsync"/> has not been called before
+        /// <see cref="InitializeDatabase"/> has not been called before
         /// </exception>
         /// <exception cref="ArgumentException">
         /// Unknown <paramref name="memberNumber"/>.
@@ -209,7 +200,7 @@ namespace CashDesk
         /// Created membership record
         /// </returns>
         /// <exception cref="InvalidOperationException">
-        /// <see cref="InitializeDatabaseAsync"/> has not been called before
+        /// <see cref="InitializeDatabase"/> has not been called before
         /// </exception>
         /// <exception cref="AlreadyMemberException">
         /// The member is already an active member.
@@ -229,7 +220,7 @@ namespace CashDesk
         /// Updated membership record with <see cref="IMembership.End"/> set.
         /// </returns>
         /// <exception cref="InvalidOperationException">
-        /// <see cref="InitializeDatabaseAsync"/> has not been called before
+        /// <see cref="InitializeDatabase"/> has not been called before
         /// </exception>
         /// <exception cref="NoMemberException">
         /// The member is currently not an active member.
@@ -246,7 +237,7 @@ namespace CashDesk
         /// Deposit the specified amount for the specified member
         /// </summary>
         /// <exception cref="InvalidOperationException">
-        /// <see cref="InitializeDatabaseAsync"/> has not been called before
+        /// <see cref="InitializeDatabase"/> has not been called before
         /// </exception>
         /// <exception cref="ArgumentException">
         /// Unknown <paramref name="memberNumber"/> or invalid value in <paramref name="amount"/>.
@@ -260,8 +251,8 @@ namespace CashDesk
         /// Gets statistics about deposits per member.
         /// </summary>
         /// <exception cref="InvalidOperationException">
-        /// <see cref="InitializeDatabaseAsync"/> has not been called before
+        /// <see cref="InitializeDatabase"/> has not been called before
         /// </exception>
-        Task<IEnumerable<IDepositStatistics>> GetDepositStatisticsAsync();
+        IEnumerable<IDepositStatistics> GetDepositStatistics();
     }
 }

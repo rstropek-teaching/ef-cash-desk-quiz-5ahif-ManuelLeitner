@@ -20,7 +20,7 @@ namespace CashDesk.Tests
         {
             using (var dal = new DataAccess())
             {
-                await dal.InitializeDatabaseAsync();
+                 dal.InitializeDatabase();
                 var memberNumber = await dal.AddMemberAsync("Foo", "CancelMember", DateTime.Today.AddYears(-18));
                 await dal.JoinMemberAsync(memberNumber);
                 await dal.CancelMembershipAsync(memberNumber);
@@ -35,7 +35,7 @@ namespace CashDesk.Tests
         {
             using (var dal = new DataAccess())
             {
-                await dal.InitializeDatabaseAsync();
+                 dal.InitializeDatabase();
                 var memberNumber = await dal.AddMemberAsync("Foo", "NoMemberCancel", DateTime.Today.AddYears(-18));
                 await Assert.ThrowsAsync<NoMemberException>(async () => await dal.CancelMembershipAsync(memberNumber));
             }
